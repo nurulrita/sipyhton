@@ -12,7 +12,9 @@
 			<p class="lead">This is an app which can poll something.</p>
 			<ol>
 			{% for quest in questions %}
-				<li>{{quest.question_text}}</li>
+				<li>
+					<a href="{% url 'poll:detail_question' quest.id %}">{{quest.question_text}}</a>
+				</li>
 			{% endfor %}
 			</ol>
 

@@ -1,11 +1,38 @@
-<p>{{question.question_text}}</p>
-<ol>
-	{%  for choice in question.choice_set.all %}
-	<li>
-	{{choice.choice_text}}
-	{% if choice.image %}
-	<img src = "{{choice.image.url}}">
-	</li>
-	{% endif %}
-	{% endfor %}
-</ol>
+{% load staticfiles %}
+
+<html>
+	<head>
+		<title>This is Poll</title>
+		<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+			<h1>{{question.question_text}}</h1><br />
+
+			<form action="{% url 'poll:vote'  %}" method="post">
+
+			{% csrf_token %}
+			
+			<ul style="list-style-type: none">
+			{%  for choice in question.choice_set.all %}
+				<li>
+				<input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+				{{choice.choice_text}}
+				{% if choice.image %}
+				<br /><img class ="img-circle" src = "{{choice.image.url|default_if_none:'#' }}" height=150 width= 150>
+				{% endif %}
+				</li>
+				
+			{% endfor %}
+			</ul>
+			<br><input type="submit" value="Vote" /></br>
+			</form>
+			</div>
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="{% static 'js/bootstrap.js' %}"></script>
+	</body>
+</html>
+
+
